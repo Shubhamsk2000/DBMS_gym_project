@@ -20,6 +20,7 @@ const Trainers = () => {
     const addTrainer = async () => {
         await axios.post('http://localhost:5000/api/trainers', newTrainer);
         fetchTrainers(); // Reload trainers after adding
+        setNewTrainer({ name: '', specialization: '', email: '', phone: '' }); // Reset input fields
     };
 
     // Delete trainer
@@ -29,27 +30,65 @@ const Trainers = () => {
     };
 
     return (
-        <div className="container">
-            <h2>Trainers</h2>
+        <div className="container mx-auto p-4">
+            <h2 className='my-4 font-bold text-3xl text-center text-gray-800'>Trainers</h2>
 
             {/* Add New Trainer */}
-            <div className="card">
-                <input placeholder="Name" onChange={(e) => setNewTrainer({ ...newTrainer, name: e.target.value })} />
-                <input placeholder="Specialization" onChange={(e) => setNewTrainer({ ...newTrainer, specialization: e.target.value })} />
-                <input placeholder="Email" onChange={(e) => setNewTrainer({ ...newTrainer, email: e.target.value })} />
-                <input placeholder="Phone" onChange={(e) => setNewTrainer({ ...newTrainer, phone: e.target.value })} />
-                <button onClick={addTrainer}>Add Trainer</button>
+            <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+                <h3 className="text-xl font-semibold mb-4">Add New Trainer</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                        className="border border-gray-300 rounded-md p-2"
+                        placeholder="Name"
+                        value={newTrainer.name}
+                        onChange={(e) => setNewTrainer({ ...newTrainer, name: e.target.value })}
+                    />
+                    <input
+                        className="border border-gray-300 rounded-md p-2"
+                        placeholder="Specialization"
+                        value={newTrainer.specialization}
+                        onChange={(e) => setNewTrainer({ ...newTrainer, specialization: e.target.value })}
+                    />
+                    <input
+                        className="border border-gray-300 rounded-md p-2"
+                        placeholder="Email"
+                        value={newTrainer.email}
+                        onChange={(e) => setNewTrainer({ ...newTrainer, email: e.target.value })}
+                    />
+                    <input
+                        className="border border-gray-300 rounded-md p-2"
+                        placeholder="Phone"
+                        value={newTrainer.phone}
+                        onChange={(e) => setNewTrainer({ ...newTrainer, phone: e.target.value })}
+                    />
+                </div>
+                <button
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                    onClick={addTrainer}
+                >
+                    Add Trainer
+                </button>
             </div>
 
             {/* Display Trainers */}
-            <ul>
-                {trainers.map(trainer => (
-                    <li key={trainer.trainer_id}>
-                        {trainer.name} - {trainer.specialization}
-                        <button className="delete-button" onClick={() => deleteTrainer(trainer.trainer_id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <div className="bg-white shadow-lg rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4">Current Trainers</h3>
+                <ul className="space-y-4">
+                    {trainers.map(trainer => (
+                        <li key={trainer.trainer_id} className="flex justify-between items-center bg-gray-100 p-4 rounded-md">
+                            <div>
+                                <span className="font-bold text-gray-800">{trainer.name}</span> - <span className="text-gray-600">{trainer.specialization}</span>
+                            </div>
+                            <button
+                                className="ml-4 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-300"
+                                onClick={() => deleteTrainer(trainer.trainer_id)}
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
